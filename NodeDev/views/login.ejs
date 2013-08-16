@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/jquery-mobile/jquery.mobile.theme-1.0.min.css" rel="stylesheet" type="text/css">
+    <link href="/jquery-mobile/jquery.mobile.structure-1.0.min.css" rel="stylesheet" type="text/css">
+    <script src="/jquery-mobile/jquery-1.6.4.min.js" type="text/javascript"></script>
+    <script src="/jquery-mobile/jquery.mobile-1.0.min.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8" src="/javascripts/appComm.js"></script>
+</head>
+
+<body>
+<div data-role="page" id="page">
+    <div data-role="header">
+        <h1>用户登陆</h1>
+        <a id="home" data-icon="home" data-iconpos="left" data-role="button">首页</a>
+    </div>
+    <div data-role="content">
+        <div data-role="fieldcontain">
+            <label for="textinput">用户名:</label>
+            <input type="text" name="textinput" id="textinput" value=""  />
+            <br/>
+            <span style="color: red" id="userSpan"></span>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="passwordinput">密码:</label>
+            <input type="password" name="passwordinput" id="passwordinput" value=""  />
+            <br/>
+            <span style="color: red" id="pwdSpan"></span>
+            <button id="login" data-icon="forward">登陆</button>
+            <button id="register" data-icon="forward">注册</button>
+            <br/>
+            <span style="color: red" id="info"></span>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function(){
+        $("#home").click(function(){
+                    window.location.href="/";
+                }
+        );
+        $("#register").click(function(){
+                    window.location.href="register";
+                }
+        );
+        $("#login").click(function(){
+
+            var userName =  $("#textinput").val();
+            var pwd =  $("#passwordinput").val();
+
+            if (userName == null || userName == "") {
+            //alert("用户名不能为空！");
+            $("#userSpan").html("用户名不能为空！");
+                return;
+            }else{
+                $("#userSpan").html("");
+            }
+
+            if (pwd == null || pwd == "") {
+               //alert("用户名不能为空！");
+                $("#pwdSpan").html("密码不能为空！");
+                    return;
+                }else{
+                    $("#pwdSpan").html("");
+            }
+
+            $("#info").html("");
+
+            var user = {
+                userName:userName,
+                pwd:pwd
+            };
+            var time = new Date();
+            time = time.getTime()
+            $.get('/log?time='+time,user,function(data){
+//                alert(data.msg);
+                $("#info").html(data.msg);
+                if(data.tag == 'y'){
+                    alert(data.msg);
+                    window.location.href="/";
+                }
+            },'json');
+          }
+        );
+    });
+</script>
+</html>
